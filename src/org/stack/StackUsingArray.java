@@ -1,3 +1,4 @@
+package org.stack;
 
 public class StackUsingArray {
 	int size=4;

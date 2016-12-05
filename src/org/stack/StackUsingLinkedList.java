@@ -1,3 +1,4 @@
+package org.stack;
 class Node
 {
 	int v;
