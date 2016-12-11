@@ -48,18 +48,28 @@ public class InsertionSort {
 
 /*
  
-In general, where N is the number of items in the array, there are N–1 comparisons on
-the first pass, N–2 on the second, and so on. The formula for the sum of such a series is
-(N–1) + (N–2) + (N–3) + ... + 1 = N*(N–1)/2
-N*(N–1)/2 is 45 when N is 10.
-Thus the algorithm makes about N2/2 comparisons (ignoring the –1, which doesn't make
-much difference, especially if N is large).
-There are fewer swaps than there are comparisons, because two bars are swapped only
-if they need to be. If the data is random, a swap is necessary about half the time, so there
-will be about N2/4 swaps. (Although in the worst case, with the initial data inversely
-sorted, a swap is necessary with every comparison.)
-Both swaps and comparisons are proportional to N2. Because constants don't count in
-Big O notation, we can ignore the 2 and the 4 and say that the bubble sort runs in O(N2)
-time.
+How many comparisons and copies does this algorithm require? On the first pass, it
+compares a maximum of one item. On the second pass, it’s a maximum of two
+items, and so on, up to a maximum of N-1 comparisons on the last pass. This is
+1 + 2 + 3 + … + N-1 = N*(N-1)/2
+However, because on each pass an average of only half of the maximum number of
+items are actually compared before the insertion point is found, we can divide by 2,
+which gives
+N*(N-1)/4
+The number of copies is approximately the same as the number of comparisons.
+However, a copy isn’t as time-consuming as a swap, so for random data this algorithm
+runs twice as fast as the bubble sort and faster than the selection sort.
+In any case, like the other sort routines in this chapter, the insertion sort runs in
+O(N2) time for random data.
+For data that is already sorted or almost sorted, the insertion sort does much better.
+When data is in order, the condition in the while loop is never true, so it becomes a
+simple statement in the outer loop, which executes N-1 times. In this case the algorithm
+runs in O(N) time. If the data is almost sorted, insertion sort runs in almost
+O(N) time, which makes it a simple and efficient way to order a file that is only
+slightly out of order.
+However, for data arranged in inverse sorted order, every possible comparison and
+shift is carried out, so the insertion sort runs no faster than the bubble sort. You can
+check this using the reverse-sorted data option (toggled with New) in the InsertSort
+Workshop applet.
  
  */
