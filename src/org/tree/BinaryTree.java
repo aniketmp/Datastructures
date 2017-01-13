@@ -11,13 +11,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
 
-class Node implements Serializable
+class BNode implements Serializable
 {
-	Node left, right;
+	BNode left, right;
     int data;
     public static final long serialVersionUID = -5225085453768948691L;
 
-    public Node(int data) {
+    public BNode(int data) {
         this.data = data;
     }
 
@@ -28,20 +28,20 @@ class Node implements Serializable
 
 	@Override
 	public boolean equals(Object obj) {
-		return this.data==((Node)obj).data;
+		return this.data==((BNode)obj).data;
 	}
     
 }
 
 class BTreePrinter {
 
-    public static void printNode(Node root) {
+    public static void printNode(BNode root) {
         int maxLevel = BTreePrinter.maxLevel(root);
 
         printNodeInternal(Collections.singletonList(root), 1, maxLevel);
     }
 
-    private static <T extends Comparable<?>> void printNodeInternal(List<Node> nodes, int level, int maxLevel) {
+    private static <T extends Comparable<?>> void printNodeInternal(List<BNode> nodes, int level, int maxLevel) {
         if (nodes.isEmpty() || BTreePrinter.isAllElementsNull(nodes))
             return;
 
@@ -52,8 +52,8 @@ class BTreePrinter {
 
         BTreePrinter.printWhitespaces(firstSpaces);
 
-        List<Node> newNodes = new ArrayList<Node>();
-        for (Node node : nodes) {
+        List<BNode> newNodes = new ArrayList<BNode>();
+        for (BNode node : nodes) {
             if (node != null) {
                 System.out.print(node.data);
                 newNodes.add(node.left);
@@ -102,7 +102,7 @@ class BTreePrinter {
             System.out.print(" ");
     }
 
-    private static <T extends Comparable<?>> int maxLevel(Node node) {
+    private static <T extends Comparable<?>> int maxLevel(BNode node) {
         if (node == null)
             return 0;
 
@@ -120,16 +120,16 @@ class BTreePrinter {
 
 }
 public class BinaryTree {
-	static Node root;
-	static ArrayList<Node> nodeList=null;
+	static BNode root;
+	static ArrayList<BNode> nodeList=null;
 	static int index=0;
 	public static void insert(int val)
 	{
-		Node currentPtr=root;
-		Node parentPtr=null;
+		BNode currentPtr=root;
+		BNode parentPtr=null;
 		if(root==null)
 		{
-			root=new Node(val);
+			root=new BNode(val);
 		}
 		else
 		{
@@ -141,7 +141,7 @@ public class BinaryTree {
 					currentPtr=currentPtr.left;
 					if(currentPtr==null)
 					{
-						parentPtr.left=new Node(val);
+						parentPtr.left=new BNode(val);
 						break;
 					}
 					
@@ -151,7 +151,7 @@ public class BinaryTree {
 					currentPtr=currentPtr.right;
 					if(currentPtr==null)
 					{
-						parentPtr.right=new Node(val);
+						parentPtr.right=new BNode(val);
 						break;
 					}
 				}
@@ -161,16 +161,16 @@ public class BinaryTree {
 		}
 		System.out.println("Node inserted successfully!");
 	}
-	public static void save(Node root) throws Exception
+	public static void save(BNode root) throws Exception
 	{		
-		nodeList=new ArrayList<Node>();
+		nodeList=new ArrayList<BNode>();
 		
 		if(root==null)
 		{
 			System.out.println("There is no elements in the list to save.");
 			return;
 		}
-		Node n=root;
+		BNode n=root;
 		saveRec(n);	
 		System.out.println("Tree is:"+nodeList);
 		FileOutputStream fio=new FileOutputStream("tree.txt");
@@ -178,7 +178,7 @@ public class BinaryTree {
 		Oout.writeObject(nodeList);
 		nodeList=null;
 	}
-	public static void saveRec(Node node)
+	public static void saveRec(BNode node)
 	{		
 		if(node==null)
 		{
@@ -197,7 +197,7 @@ public class BinaryTree {
 		FileInputStream fio=new FileInputStream("tree.txt");
 		ObjectInputStream oip=new ObjectInputStream(fio);
 		index=0;
-		nodeList=(ArrayList<Node>) oip.readObject();
+		nodeList=(ArrayList<BNode>) oip.readObject();
 		System.out.println("Retrieved list from file is :"+nodeList);
 		root=nodeList.get(index++);
 		if(root==null)
@@ -211,9 +211,9 @@ public class BinaryTree {
 		
 		
 	}
-	private static void retrieveRec(Node node) {
+	private static void retrieveRec(BNode node) {
 			
-		Node n=nodeList.get(index++);
+		BNode n=nodeList.get(index++);
 		if(n==null)
 		{			
 			return;
@@ -224,7 +224,7 @@ public class BinaryTree {
 				
 		
 	}
-	private static Node findNode(Node root,int val)
+	private static BNode findNode(BNode root,int val)
 	{
 		if(root==null)
 		{
@@ -234,7 +234,7 @@ public class BinaryTree {
 		else
 		{
 			
-			Node current=null;
+			BNode current=null;
 			current=root;
 			while(current!=null)
 			{
@@ -314,16 +314,14 @@ public class BinaryTree {
 					System.out.println("Enter the data to find the node:");
 					int no=sc.nextInt();
 					System.out.println(findNode(root, no));
-					break;
-					
+					break;					
 				}
 				case 8:
 				{
 					System.out.println("Enter the data to delete the node:");
 					int no=sc.nextInt();
 					deleteNode(no);					
-					break;
-					
+					break;					
 				}
 				
 			}
@@ -336,22 +334,20 @@ public class BinaryTree {
 			System.out.println("Tree is empty.");			
 			return;
 		}
-		Node current=root;
-		Node parent=root;
+		BNode current=root;
+		BNode parent=root;
 		boolean isLeft=false;
 		boolean isRight=false;
 		while(current!=null && current.data!=no)
 		{
-						
+			parent=current;							
 			if(no<current.data)
 			{
-				parent=current;				
 				isRight=false;
 				current=current.left;
 			}
 			else
 			{				
-				parent=current;				
 				isRight=true;
 				current=current.right;
 			}			
@@ -364,7 +360,7 @@ public class BinaryTree {
 		{
 			System.out.println("Node is:"+current+", Its parent:"+parent+" left:"+isLeft+"  right:"+isRight);
 			//Case 1:check whether it has a child or not..
-			if(current.left==null&&current.right==null) 
+			if(current.left==null&&current.right==null)  //This means node to be deleted dont have any child.
 			{
 				//check whether node to be deleted is ROOT node or not.
 				if(current==root)
@@ -419,8 +415,8 @@ public class BinaryTree {
 			else 
 			{
 				//find the successor of node to be deleted.
-				Node successor=current.right;
-				Node successorsParent=null;
+				BNode successor=current.right;
+				BNode successorsParent=null;
 				
 				while(successor.left!=null)
 				{
