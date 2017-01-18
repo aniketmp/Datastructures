@@ -205,6 +205,34 @@ class Node implements Serializable
 			}
 		}
 	}
+	private void deleteItem(Node delNode,DataItem dataItem) 
+	{
+		if(delNode.isRoot)
+		{
+			if(delNode.isLeaf())
+			{
+				for(int i=0;i<numItems;i++)
+				{
+					if(delNode.getDataItem(i).equals(dataItem.data))
+					{
+						if(i==numItems-1)
+						{
+							delNode.dataItems[i]=null;
+						}
+						else
+						{
+							for(int j=i;j<numItems-1;j++)
+							{
+								delNode.dataItems[j]=delNode.dataItems[j+1];
+							}
+						}
+						
+					}
+				}
+				
+			}
+		}
+	}
 
 	private void setParent(Node node) {
 		// TODO Auto-generated method stub
