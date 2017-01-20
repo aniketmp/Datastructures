@@ -57,7 +57,7 @@ public class QuickSort {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("Array Before InsertionSort Sort");  
+		System.out.println("Array Before Quick Sort");  
         for(int i=0; i < a.length; i++){  
                 System.out.print(a[i] + " ");  
         }  
@@ -65,7 +65,7 @@ public class QuickSort {
           
         quickSort(0,a.length-1);//sorting array elements using bubble sort  
          
-        System.out.println("Array After InsertionSort Sort");  
+        System.out.println("Array After Quick Sort");  
         for(int i=0; i < a.length; i++){  
                 System.out.print(a[i] + " ");  
         }  
