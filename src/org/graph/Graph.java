@@ -12,6 +12,7 @@ class Vertex
 		this.label = lable;
 		wasVisited = false;
 	}
+	
 } // end class Vertex
 public class Graph 
 {
@@ -114,6 +115,34 @@ public class Graph
 		}
 		
 	} 
+	public void minimumSpanningTree() // depth-first search
+	{ // begin at vertex 0
+		vertexList[0].wasVisited = true; // mark it		
+		theStack.push(0); // push it
+		while( !theStack.isEmpty() ) // until stack empty,
+		{
+		// get an unvisited vertex adjacent to stack top
+			int currentVertexPos=theStack.peek(); 
+			int v = getAdjUnvisitedVertex(currentVertexPos);
+			if(v == -1) // if no such vertex,
+			{
+				theStack.pop(); // pop a new one
+			}
+			else // if it exists,
+			{	
+				vertexList[v].wasVisited = true; // mark it
+				displayVertex(currentVertexPos); // display the current vertex
+				displayVertex(v); // display vertex adjecent of it
+				theStack.push(v); // push it
+			}
+		} // end while
+		// stack is empty, so we're done
+		for(int j=0; j<nVerts; j++) // reset flags
+		{
+			vertexList[j].wasVisited = false;
+		}
+	
+	} // end dfs
 	public static void main(String[] args) 
 	{
 		Graph theGraph=new Graph();
@@ -132,6 +161,8 @@ public class Graph
 	    theGraph.depthFirstSearch();
 	    System.out.println("\nPrintint via breadthFirstSearch algo..");
 		theGraph.breadthFirstSearch();
+		System.out.println("\nPrintint Minimum spanning tree algo..");
+		theGraph.minimumSpanningTree();
 	}
 
 } // end class Graph
