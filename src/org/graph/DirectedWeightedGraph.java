@@ -3,48 +3,29 @@ package org.graph;
 import java.util.Iterator;
 import java.util.PriorityQueue;
 
-class DirectedWeightedVertex extends Vertex
+class DVEdge extends Edge
 {
-	public int overallWeight;
-	public boolean isAddedInTree;
-	public DirectedWeightedVertex(char lable) {
-		super(lable); 
+
+	public DVEdge(int soruceIndex, int j, int i) {
+		super(soruceIndex,j,i);
 	}
-	
-}
-class EdgeV2 extends Edge implements Comparable<Edge>
-{
-	
-	
-	
-	@Override
-	public boolean equals(Object obj) {
-		// TODO Auto-generated method stub
-		return (destVertexIndex==((Edge)(obj)).destVertexIndex);
-	}
-	@Override
-	public int compareTo(Edge o) {
-		
-		return new Integer(weight+DirectedWeightedGraph.vertexList[soruceVertexIndex].overallWeight).compareTo(new Integer(DirectedWeightedGraph.vertexList[o.soruceVertexIndex].overallWeight));
-	}
+
 	@Override
 	public String toString() {
-		return "Edge [soruceVertexIndex=" + WeightedGraph.vertexList[soruceVertexIndex].label+ ", destVertexIndex=" + WeightedGraph.vertexList[destVertexIndex].label + ", weight="
+		return "Edge [soruceVertexIndex=" + DirectedWeightedGraph.vertexList[soruceVertexIndex].label+ ", destVertexIndex=" + DirectedWeightedGraph.vertexList[destVertexIndex].label + ", weight="
 				+ weight + "]";
 	}
-	
-	
 }
 public class DirectedWeightedGraph 
 {	
-	PriorityQueue<Edge> pQueue=new PriorityQueue<Edge>(); 
+	PriorityQueue<DVEdge> pQueue=new PriorityQueue<DVEdge>(); 
 	private final int MAX_VERTS = 20;
-	static DirectedWeightedVertex vertexList[]; // array of vertices
+	static WeightedVertex vertexList[]; // array of vertices
 	private int adjMat[][]; // adjacency matrix
 	private int nVerts; // current number of vertices
 	public DirectedWeightedGraph() 
 	{
-		vertexList = new DirectedWeightedVertex[MAX_VERTS];// adjacency matrix
+		vertexList = new WeightedVertex[MAX_VERTS];// adjacency matrix
 		adjMat = new int[MAX_VERTS][MAX_VERTS];
 		nVerts = 0;
 		for(int j=0; j<MAX_VERTS; j++)
@@ -57,11 +38,11 @@ public class DirectedWeightedGraph
 	}
 	public void addVertex(char lab) // argument is label
 	{
-		vertexList[nVerts++] = new DirectedWeightedVertex(lab);
+		vertexList[nVerts++] = new WeightedVertex(lab);
 	}
 	public void addEdge(int start, int end,int weight)
 	{
-		adjMat[start][end] = weight;// Since its a weighted as well as directed graph			
+		adjMat[start][end] = weight;//Since its a weighted and directed graph			
 	}
 	public void displayVertex(int v)
 	{		
@@ -73,7 +54,9 @@ public class DirectedWeightedGraph
 		
 		for(int j=0; j<nVerts; j++)
 		{
-			Edge edge=new Edge(soruceIndex,j,adjMat[soruceIndex][j]);
+			int previousWeight=vertexList[soruceIndex].weight;
+			int currentWeight=adjMat[soruceIndex][j];
+			DVEdge edge=new DVEdge(soruceIndex,j,currentWeight+previousWeight);
 			if(adjMat[soruceIndex][j]==0 || vertexList[j].isAddedInTree)
 			{
 					continue;		
@@ -83,11 +66,11 @@ public class DirectedWeightedGraph
 				
 				if(pQueue.contains(edge))
 				{
-					Iterator<Edge> edgesItr=pQueue.iterator();
+					Iterator<DVEdge> edgesItr=pQueue.iterator();
 					boolean replace=false;
 					while(edgesItr.hasNext())
 					{
-						Edge e=edgesItr.next();
+						DVEdge e=edgesItr.next();
 						if(e.compareTo(edge) > 0)
 						{
 							replace=true;
@@ -114,13 +97,15 @@ public class DirectedWeightedGraph
 	private void dijkstraAlgo() 
 	{				
 		int startVertexPos=0;
-		vertexList[startVertexPos].isAddedInTree=true;		
+		vertexList[startVertexPos].isAddedInTree=true;
+		vertexList[startVertexPos].weight=0;
 		do
 		{
 			putAdjEdgesInPQueue(startVertexPos);
 			Edge peekEdge=pQueue.remove();
 			System.out.println(peekEdge);
 			vertexList[peekEdge.destVertexIndex].isAddedInTree=true;
+			vertexList[peekEdge.destVertexIndex].weight=peekEdge.weight; //also need to update weight so that next time we can add the previous weight.
 			startVertexPos=peekEdge.destVertexIndex;
 		}while(!(pQueue.isEmpty()));
 		
@@ -148,7 +133,7 @@ public class DirectedWeightedGraph
 		theGraph.addEdge(3, 4, 70);// DE		
 		
 		
-		System.out.println("Minimum spanning tree: ");
+		System.out.println("Djikstra's Algo: ");
 		theGraph.dijkstraAlgo();
 	    
 	    

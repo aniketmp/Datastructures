@@ -6,6 +6,7 @@ import java.util.PriorityQueue;
 import javax.sound.midi.Soundbank;
 class WeightedVertex extends Vertex
 {
+	public int weight;//This will use in djikstra's algo
 	public boolean isAddedInTree;
 	public WeightedVertex(char lable) {
 		super(lable);
